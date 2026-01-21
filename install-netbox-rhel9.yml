@@ -97,5 +97,5 @@
         msg: |
           "Issue the following command to configure the super user from the cli
           podman-compose exec netbox /opt/netbox/netbox/manage.py createsuperuser
-          Netbox should be available at http://{{ hostvars['greg-netbox']['ansible_host'] | default(greg-netbox) }}:8000/"
+          Netbox should be available at http://{{ hostvars[inventory_hostname]['ansible_host'] | default(x.x.x.x) }}:8000/"
            
