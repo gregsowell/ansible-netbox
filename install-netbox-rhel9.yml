@@ -77,9 +77,19 @@
           WantedBy=multi-user.target
       become: true
 
+    - name: Enable firewall for new container port
+      ansible.builtin.firewalld:
+        port: 8000/tcp
+        permanent: true
+        state: enabled
+        immediate: true
+      become: true
+
     - name: Enable and start netbox container systemd service
       ansible.builtin.systemd:
         name: netbox-container.service
         enabled: true
         state: started
       become: true
+
+    
