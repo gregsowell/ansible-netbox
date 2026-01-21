@@ -92,4 +92,10 @@
         state: started
       become: true
 
-    
+    - name: Show some information
+      ansible.builtin.debug:
+        msg: |
+          "Issue the following command to configure the super user from the cli
+          podman-compose exec netbox /opt/netbox/netbox/manage.py createsuperuser
+          Netbox should be available at http://{{ hostvars['greg-netbox']['ansible_host'] | default(greg-netbox) }}:8000/"
+           
