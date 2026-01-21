@@ -36,7 +36,7 @@
 
     - name: Create compose file
       ansible.builtin.copy:
-        dest: /root/netbox-docker/podman-compose.override.yml
+        dest: /root/netbox-docker/docker-compose.override.yml
         content: |
           version: '3.4'
           services:
