@@ -1,0 +1,84 @@
+---
+- name: Install netbox container on RHEL 9 box
+  hosts: greg-netbox
+  gather_facts: false
+  vars:
+    kill_selinux: true
+  tasks:
+    - name: Change SELinux to permissive mode
+      when: kill_selinux
+      ansible.builtin.shell: |
+        setenforce 0
+        sed -i 's/^SELINUX=enforcing/SELINUX=permissive/' /etc/selinux/config
+      become: true
+
+    - name: Enable codeready builder repo
+      ansible.builtin.shell: sudo subscription-manager repos --enable codeready-builder-for-rhel-9-$(arch)-rpms
+
+    - name: Install epel
+      ansible.builtin.dnf:
+        name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
+        state: present
+
+    - name: Install podman, podman compose, git
+      ansible.builtin.dnf:
+        name:
+          - podman
+          - podman-compose
+          - git
+        state: present
+
+    - name: Clone netbox container repo
+      ansible.builtin.git:
+        repo: https://github.com/netbox-community/netbox-docker.git
+        dest: /root/netbox-docker
+
+    - name: Create compose file
+      ansible.builtin.copy:
+        dest: /root/netbox-docker/podman-compose.override.yml
+        content: |
+          version: '3.4'
+          services:
+            netbox:
+              ports:
+                - "8000:8080"
+
+    - name: Run podman compose pull
+      ansible.builtin.shell: podman-compose pull
+      args:
+        chdir: /root/netbox-docker
+
+    # - name: Run podman compose up
+    #   ansible.builtin.shell: podman-compose up -d
+    #   args:
+    #     chdir: /root/netbox-docker
+
+    - name: Create dirty systemd start file
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/netbox-container.service
+        content: |
+          [Unit]
+          Description=NetBox Podman Compose Stack
+          Wants=network-online.target
+          After=network-online.target
+
+          [Service]
+          Type=oneshot
+          RemainAfterExit=yes
+
+          WorkingDirectory=/root/netbox-docker
+          ExecStart=/usr/bin/podman-compose up -d
+          ExecStop=/usr/bin/podman-compose down
+
+          TimeoutStartSec=0
+
+          [Install]
+          WantedBy=multi-user.target
+      become: true
+
+    - name: Enable and start netbox container systemd service
+      ansible.builtin.systemd:
+        name: netbox-container.service
+        enabled: true
+        state: started
+      become: true
