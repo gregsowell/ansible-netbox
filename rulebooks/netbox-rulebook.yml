@@ -3,7 +3,7 @@
   hosts: all
   execution_strategy: parallel
   vars:
-    webhook_port: 5001
+    # webhook_port: 5001
   sources:
     - ansible.eda.webhook:
         port: "{{ webhook_port | default(5000) }}"
