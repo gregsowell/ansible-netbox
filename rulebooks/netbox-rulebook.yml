@@ -15,7 +15,7 @@
         event.payload.model == "interface"
       action:
         run_workflow_template:
-          name: Netbox | Interface Update
+          name: Netbox - Interface Update
           organization: Default
           job_args:
             extra_vars:
