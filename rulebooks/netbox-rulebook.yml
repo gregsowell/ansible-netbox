@@ -34,7 +34,7 @@
       condition: |
         event.payload.event == "updated" and
         event.payload.model == "interface" and
-        event.payload.data.mode.value == "trunk"
+        event.payload.data.mode.value == "tagged"
       action:
         run_workflow_template:
           name: Netbox - Interface Update
