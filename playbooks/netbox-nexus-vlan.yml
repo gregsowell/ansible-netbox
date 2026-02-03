@@ -1,6 +1,6 @@
 ---
 - name: Configure VLANS on a nexus switch based on an EDA webook from Netbox
-  hosts: localhost
+  hosts: {{ _hosts }}
   gather_facts: false
   vars:
   tasks:
