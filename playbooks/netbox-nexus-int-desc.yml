@@ -1,0 +1,13 @@
+---
+- name: Configure interface description on a nexus switch based on an EDA webook from Netbox
+  hosts: nexus
+  gather_facts: false
+  vars:
+  tasks:
+    - name: Configure interface description
+      when: inventory_hostname == _hosts
+      cisco.nxos.nxos_interfaces:
+        config:
+          - name: "{{ interface_name }}"
+            description: "{{ interface_description | default('Config via Netbox')}}"
+      state: merged
