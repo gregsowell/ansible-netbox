@@ -9,42 +9,25 @@
         port: "{{ webhook_port | default(5000) }}"
         token: "{{ webhook_token | default(omit) }}"
   rules:
-    - name: ServiceNOW | Provision Virtual Machine
+    - name: Netbox | Interface Update
       condition: |
-        event.payload.requester == "gsowell@redhat.com" and
-        event.payload.catalog_item == "VM Provision" and
-        event.payload.event == "SERVICE_CATALOG"
+        event.payload.event == "updated" and
+        event.payload.model == "interface"
       action:
         run_workflow_template:
-          name: ServiceNOW | VM Provision
+          name: Netbox | Interface Update
           organization: Default
           job_args:
             extra_vars:
-              _hosts: "{{ event.payload.hostname }}"
-              snow_request_name: "{{ event.payload.request_name }}"
-              virtual_machines:
-                - name: "{{ event.payload.hostname }}"
-                  cluster: "{{ event.payload.cluster }}"
-                  vm_size: "{{ event.payload.vm_size }}"
-                  custom_fields:
-                    vmware_linked_clone: "{{ event.payload.linked_clone }}"
-                    vmware_template: "{{ event.payload.template }}"
-
-    - name: ServiceNOW | Deprovision Virtual Machine
-      condition: |
-        event.payload.requester == "gsowell@redhat.com" and
-        event.payload.catalog_item == "VM Decomission" and
-        event.payload.event == "SERVICE_CATALOG"
-      action:
-        run_workflow_template:
-          name: ServiceNOW | VM Deprovision
-          organization: Default
-          job_args:
-            extra_vars:
-              _hosts: "{{ event.payload.virtual_machine }}"
-              snow_request_name: "{{ event.payload.request_name }}"
-              virtual_machines:
-                - name: "{{ event.payload.virtual_machine }}"
+              _hosts: "{{ event.payload.data.device.name }}"
+              switchport_mode: "{{ event.payload.data.mode.value }}"
+              interface_name: "{{ event.payload.data.name }}"
+              interface_description: "{{ event.payload.data.description }}"
+              # tagged_vlans: "{{ event.payload.data.tagged_vlans | map(attribute='id') | list }}"
+              tagged_vlans: "{{ event.payload.data.tagged_vlans | default(omit) }}"
+              untagged_vlan: "{{ event.payload.data.untagged_vlan | default(omit) }}"
+                # name: "{{ event.payload.data.untagged_vlan.name }}"
+                # vid: "{{ event.payload.data.untagged_vlan.vid }}"
 
     - name: Netbox | Unhandled Events
       condition: event.payload is defined
