@@ -24,7 +24,7 @@
             state: merged
 
     - name: Block for switchport trunk mode
-      when: switchport_mode == "trunk" and tagged_vlans is defined and inventory_hostname == _hosts
+      when: switchport_mode == "tagged" and tagged_vlans is defined and inventory_hostname == _hosts
       block:
         - name: Update the VLAN database on the switch
           cisco.nxos.nxos_vlans:
