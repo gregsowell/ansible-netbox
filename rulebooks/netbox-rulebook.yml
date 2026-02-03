@@ -25,7 +25,7 @@
               interface_description: "{{ event.payload.data.description }}"
               # tagged_vlans: "{{ event.payload.data.tagged_vlans | map(attribute='id') | list }}"
               tagged_vlans: "{{ event.payload.data.tagged_vlans | default(omit) }}"
-              untagged_vlans: "{{ event.payload.data.untagged_vlans | default(omit) }}"
+              untagged_vlan: "{{ event.payload.data.untagged_vlan | default(omit) }}"
                 # name: "{{ event.payload.data.untagged_vlan.name }}"
                 # vid: "{{ event.payload.data.untagged_vlan.vid }}"
 
