@@ -10,4 +10,4 @@
         config:
           - name: "{{ interface_name }}"
             description: "{{ interface_description | default('Config via Netbox')}}"
-      state: merged
+        state: merged
