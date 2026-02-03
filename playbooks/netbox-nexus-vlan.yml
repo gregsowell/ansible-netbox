@@ -1,8 +1,9 @@
 ---
 - name: Configure VLANS on a nexus switch based on an EDA webook from Netbox
-  hosts: {{ _hosts }}
+  hosts: localhost
   gather_facts: false
   vars:
+    hosts: "{{ _hosts}}"
   tasks:
     - name: Block for switchport access mode
       when: switchport_mode == "access" and untagged_vlan is defined
