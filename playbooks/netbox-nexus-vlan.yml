@@ -3,7 +3,7 @@
   hosts: localhost
   gather_facts: false
   vars:
-    hosts: "{{ _hosts}}"
+    hosts: "{{ _hosts }}"
   tasks:
     - name: Block for switchport access mode
       when: switchport_mode == "access" and untagged_vlan is defined
