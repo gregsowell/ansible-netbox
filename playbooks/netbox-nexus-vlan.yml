@@ -1,0 +1,50 @@
+---
+- name: Configure VLANS on a nexus switch based on an EDA webook from Netbox
+  hosts: localhost
+  gather_facts: false
+  vars:
+  tasks:
+    - name: Block for switchport access mode
+      when: switchport_mode == "access" and untagged_vlan is defined
+      block:
+        - name: Update the VLAN database on the switch
+          cisco.nxos.nxos_vlan:
+            config:
+              - vlan_id: "{{ untagged_vlan.vid }}"
+                name: "{{ untagged_vlan.name }}"
+            state: merged
+
+        - name: Configure access mode on the interface
+          cisco.nxos.nxos_l2_interfaces:
+            config:
+              - name: "{{ interface_name }}"
+                mode: access
+                access:
+                  vlan: "{{ untagged_vlan.vid }}"
+            state: merged
+
+    - name: Block for switchport trunk mode
+      when: switchport_mode == "trunk" and tagged_vlans is defined
+      block:
+        - name: Update the VLAN database on the switch
+          cisco.nxos.nxos_vlan:
+            config: "{{ vlan_list }}"
+            state: merged
+          vars:
+            vlan_list: |
+              {% set vlans = [] %}
+              {% for vlan in tagged_vlans %}
+              {%   set _ = vlans.append({'vlan_id': vlan.vid, 'name': vlan.name}) %}
+              {% endfor %}
+              {{ vlans }}
+
+        - name: Configure trunk mode on the interface
+          cisco.nxos.nxos_l2_interfaces:
+            config:
+              - name: "{{ interface_name }}"
+                mode: trunk
+                trunk:
+                  allowed_vlans: "{{ allowed_vlan_list }}"
+            state: merged
+          vars:
+            allowed_vlan_list: "{{ tagged_vlans | map(attribute='vid') | join(',') }}"
