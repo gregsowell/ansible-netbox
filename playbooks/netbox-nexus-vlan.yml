@@ -3,8 +3,13 @@
   hosts: localhost
   gather_facts: false
   vars:
-    hosts: "{{ _hosts }}"
   tasks:
+    - name: Change the hosts variable to be the contents of _hosts variable
+      set_fact:
+        ansible_host: "{{ _hosts[0] }}"
+      vars:
+        _hosts: "{{ lookup('vars', 'hosts') }}"
+        
     - name: Block for switchport access mode
       when: switchport_mode == "access" and untagged_vlan is defined
       block:
