@@ -1,0 +1,68 @@
+---
+plugin: netbox.netbox.nb_inventory
+
+# NetBox API URL (no /api/ on the end)
+# api_endpoint: "https://netbox.example.com"
+
+# Best practice for AAP: inject NETBOX_TOKEN as an environment variable (don’t commit tokens to Git)
+# The plugin supports NETBOX_TOKEN/NETBOX_API env vars too, but this keeps it explicit and readable.
+# token: "{{ lookup('env', 'NETBOX_TOKEN') }}"
+
+validate_certs: false
+
+# Pull useful SoT data into hostvars
+config_context: true
+flatten_config_context: false
+flatten_custom_fields: false
+
+# Keep inventory generation quick/lean (turn on interfaces/services only if you truly need them)
+# interfaces: false
+# services: false
+# fetch_all: true
+
+# Global filters (applies to both Devices + VMs if you use both)
+query_filters:
+  - status: "active"
+
+# Device-specific filters
+device_query_filters:
+  - has_primary_ip: "true"
+
+# Grouping (these create inventory groups automatically)
+group_by:
+  - device_roles
+  - sites
+  - tenants
+  - platforms
+
+# Extra grouping patterns (nice for network automation)
+keyed_groups:
+  - prefix: "site"
+    key: site.slug
+  - prefix: "role"
+    key: device_role.slug
+  - prefix: "platform"
+    key: platform.slug
+  - prefix: "tenant"
+    key: tenant.slug
+
+# Create/override Ansible vars from NetBox fields
+compose:
+  # Prefer primary IPv4; fall back to primary_ip if needed; strip the /mask
+  ansible_host: >-
+    {{
+      (primary_ip4.address
+        | default(primary_ip.address, true))
+      | regex_replace('/.*$', '')
+    }}
+
+  # Handy for playbooks / templates
+  netbox_id: id
+  netbox_name: name
+  netbox_site: site.slug
+  netbox_role: device_role.slug
+  netbox_platform: platform.slug
+  netbox_tenant: tenant.slug
+
+  # Example: turn tag objects into a simple list of tag names
+  netbox_tags: "{{ tags | map(attribute='name') | list }}"
