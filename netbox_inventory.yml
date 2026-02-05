@@ -1,7 +1,7 @@
 ---
 plugin: netbox.netbox.nb_inventory
 
-# NetBox API URL (no /api/ on the end)
+# NetBox API URL (no /api/ on the end) 
 # api_endpoint: "https://netbox.example.com"
 
 # Best practice for AAP: inject NETBOX_TOKEN as an environment variable (don’t commit tokens to Git)
