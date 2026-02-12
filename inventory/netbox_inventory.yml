@@ -35,15 +35,15 @@ group_names_raw: true
 group_by:
   - device_type
   - device_types
-  - device_roles
+  # - device_roles
   # - sites
   # - tenants
   # - platforms
 
 # Extra grouping patterns (nice for network automation)
 keyed_groups:
-  - prefix: "site"
-    key: site.slug
+  # - prefix: "site"
+  #   key: site.slug
   - prefix: "role"
     key: device_role.slug
   - prefix: "type"
