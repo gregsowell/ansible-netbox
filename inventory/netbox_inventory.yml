@@ -28,10 +28,13 @@ query_filters:
 device_query_filters:
   - has_primary_ip: "true"
 
+# Make group names cleaner
+group_names_raw: true
+
 # Grouping (these create inventory groups automatically)
 group_by:
-  - device_roles
   - device_types
+  - device_roles
   - sites
   - tenants
   - platforms
@@ -42,8 +45,6 @@ keyed_groups:
     key: site.slug
   - prefix: "role"
     key: device_role.slug
-  - prefix: "type"
-    key: device_type.slug
   - prefix: "platform"
     key: platform.slug
   - prefix: "tenant"
