@@ -31,7 +31,7 @@ device_query_filters:
 # Make group names cleaner
 group_names_raw: true
 
-# Grouping (these create inventory groups automatically)
+# Grouping (these create inventory groups automatically) 
 group_by:
   # - device_type
   # - device_types
