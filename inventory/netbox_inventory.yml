@@ -49,8 +49,9 @@ keyed_groups:
     key: platform.slug
   - prefix: "tenant"
     key: tenant.slug
-  - prefix: "device_type"
-    key: device_type.slug
+
+groups:
+  __CANARY_FROM_NETBOX_YML__: true
 
 # Create/override Ansible vars from NetBox fields
 compose:
