@@ -33,12 +33,11 @@ group_names_raw: true
 
 # Grouping (these create inventory groups automatically) 
 group_by:
-  # - device_type
   - device_types
-  # - device_roles
-  # - sites
-  # - tenants
-  # - platforms
+  - device_roles
+  - sites
+  - tenants
+  - platforms
 
 # Extra grouping patterns (nice for network automation)
 keyed_groups:
