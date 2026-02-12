@@ -29,7 +29,7 @@ device_query_filters:
   - has_primary_ip: "true"
 
 # Make group names cleaner
-group_names_raw: true
+# group_names_raw: true
 
 # Grouping (these create inventory groups automatically) 
 group_by:
