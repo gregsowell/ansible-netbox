@@ -50,7 +50,7 @@ keyed_groups:
   - prefix: "tenant"
     key: tenant.slug
   - prefix: "device_type"
-    key: device_types
+    key: device_type.slug
 
 # Create/override Ansible vars from NetBox fields
 compose:
