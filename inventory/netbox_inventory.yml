@@ -52,8 +52,8 @@ keyed_groups:
   - prefix: "tenant"
     key: tenant.slug
 
-groups:
-  __CANARY_FROM_NETBOX_YML__: true
+# groups:
+#   __CANARY_FROM_NETBOX_YML__: true
 
 # Create/override Ansible vars from NetBox fields
 compose:
