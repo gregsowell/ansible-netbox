@@ -34,7 +34,7 @@ group_names_raw: true
 # Grouping (these create inventory groups automatically)
 group_by:
   # - device_type
-  - device_types
+  # - device_types
   # - device_roles
   # - sites
   # - tenants
@@ -44,8 +44,8 @@ group_by:
 keyed_groups:
   # - prefix: "site"
   #   key: site.slug
-  - prefix: "role"
-    key: device_role.slug
+  # - prefix: "role"
+  #   key: device_role.slug
   - prefix: "type"
     key: device_type.slug
   # - prefix: "platform"
