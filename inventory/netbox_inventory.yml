@@ -36,8 +36,8 @@ group_by:
   - device_type
   - device_roles
   - sites
-  - tenants
-  - platforms
+  # - tenants
+  # - platforms
 
 # Extra grouping patterns (nice for network automation)
 keyed_groups:
@@ -47,10 +47,10 @@ keyed_groups:
     key: device_role.slug
   - prefix: "type"
     key: device_type.manufacturer.slug
-  - prefix: "platform"
-    key: platform.slug
-  - prefix: "tenant"
-    key: tenant.slug
+  # - prefix: "platform"
+  #   key: platform.slug
+  # - prefix: "tenant"
+  #   key: tenant.slug
 
 # groups:
 #   __CANARY_FROM_NETBOX_YML__: true
