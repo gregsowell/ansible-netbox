@@ -64,9 +64,9 @@
       block:
         - name: Power off VM
           community.vmware.vmware_guest:
-            hostname: "{{ vcenter_hostname }}"
-            username: "{{ vcenter_username }}"
-            password: "{{ vcenter_password }}"
+            # hostname: "{{ vcenter_hostname }}"
+            # username: "{{ vcenter_username }}"
+            # password: "{{ vcenter_password }}"
             validate_certs: no
             folder: "{{ vm_folder }}"
             name: "{{ vm_name }}"
@@ -76,9 +76,9 @@
 
         - name: Delete VM
           community.vmware.vmware_guest:
-            hostname: "{{ vcenter_hostname }}"
-            username: "{{ vcenter_username }}"
-            password: "{{ vcenter_password }}"
+            # hostname: "{{ vcenter_hostname }}"
+            # username: "{{ vcenter_username }}"
+            # password: "{{ vcenter_password }}"
             validate_certs: no
             folder: "{{ vm_folder }}"
             name: "{{ vm_name }}"
