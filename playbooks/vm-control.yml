@@ -7,7 +7,7 @@
     # --- vCenter auth ---
     vcenter_hostname: "vcenter.example.com"
     vcenter_username: "administrator@vsphere.local"
-    vcenter_password: "{{ vault_vcenter_password }}"
+    vcenter_password: "{{ vault_vcenter_password | default(omit)}}"
     vcenter_validate_certs_opt: false  
 
     # --- what to deploy ---
