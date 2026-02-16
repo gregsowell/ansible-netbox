@@ -51,6 +51,20 @@
                 # name: "{{ event.payload.data.untagged_vlan.name }}"
                 # vid: "{{ event.payload.data.untagged_vlan.vid }}"
 
+    - name: Netbox | VM create-modify-delete
+      condition: |
+        event.payload.model == "virtualmachine"
+      action:
+        run_workflow_template:
+          name: Netbox - VM Control
+          organization: Default
+          job_args:
+            extra_vars:
+              event_type: "{{ event.payload.event }}"
+              vm_name: "{{ event.payload.data.name }}"
+              disk_size: "{{ event.payload.data.disk }}"
+              memory_size: "{{ event.payload.data.memory }}"
+
     - name: Netbox | Unhandled Events
       condition: event.payload is defined
       action:
